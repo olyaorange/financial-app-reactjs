@@ -6,6 +6,23 @@ import ContentAddCircleOutline from 'material-ui/svg-icons/content/add-circle-ou
 import ContentRemoveCircleOutline from 'material-ui/svg-icons/content/remove-circle-outline';
 import {red500, green500} from 'material-ui/styles/colors';
 
+import categories from '../utils/categories.json';
+
+const styles = {
+    sumStyle: {
+        display: 'inline-block',
+        marginTop: 9,
+        marginBottom: -9,
+        marginRight: 20,
+        float: 'right',
+        //marginLeft: '60%',
+        verticalAlign: 'top',
+    },
+    categoryStyle: {
+        display: 'inline-block',
+    }
+};
+
 const TransactionList = (props) => {
     let handleClickDeleteTransaction = (item) => {
         props.onHandleDeleteClick(item);
@@ -27,18 +44,24 @@ const TransactionList = (props) => {
                     key={+item.date}
                     leftAvatar={
                         <Avatar
-                            backgroundColor={item.category === 1 ? red500 : green500}
-                            icon={item.category === 1
+                            backgroundColor={item.operation === 'outcome' ? red500 : green500}
+                            icon={item.operation === 'outcome'
                                 ? <ContentRemoveCircleOutline/>
                                 : <ContentAddCircleOutline/>}
                         />
                     }
                     rightIcon={<ActionDelete onClick={handleClickDeleteTransaction.bind(null, item)}/>}
-                    primaryText={item.category === 1 ? '-' + item.entry : item.entry}
                     secondaryText={formatDate(item.date)}
-                    //secondaryText={item.date}
-                    className={item.category === 1 ? 'itemOutcome' : 'itemIncome'}
-                />
+                >
+                    <div style={styles.categoryStyle}>
+                        {categories.map(elem => elem.id === item.category && elem.name)}
+                    </div>
+                    <div className={item.operation === 'outcome' ? 'itemOutcome' : 'itemIncome'}
+                         style={styles.sumStyle}
+                    >
+                        {item.operation === 'outcome' ? '-' + item.entry : item.entry} $
+                        </div>
+                </ListItem>
             ))}
         </List>
     )

@@ -7,23 +7,33 @@ import FlatButton from 'material-ui/FlatButton';
 import SelectField from 'material-ui/SelectField';
 import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
+import categories from '../utils/categories.json';
 import TransactionList from './TransactionList';
 
-const style = {
-    float: 'right',
-    marginRight: 20,
-    marginTop: -20,
-    position: 'relative',
-    zIndex: 10000,
+const styles = {
+    floatingButton: {
+        float: 'right',
+        marginRight: 20,
+        marginTop: -20,
+        position: 'relative',
+        zIndex: 10000,
+    },
+    headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+    },
 };
 
-function countTransactionSum(array, fieldName, operation) {
+function countTransactionSum(array) {
     return array.reduce(function (total, current) {
-        if (current[operation] === 1) {
-            return +total - +current[fieldName];
+        if (current['operation'] === 'outcome') {
+            return +total - +current['entry'];
         } else {
-            return +total + +current[fieldName];
+            return +total + +current['entry'];
         }
     }, 0);
 }
@@ -39,19 +49,21 @@ class Main extends Component {
         this.state = {
             total: 0,
             openDialog: false,
-            category: 1,
-            entry: 0,
+            operation: 'outcome',
+            category: '0001',
+            entry: '',
             transactions: [],
-            lt: []
+            errorText: ''
         };
     }
 
+    //componentWillMount() {}
     componentDidMount() {
         let localTransactions = JSON.parse(localStorage.getItem('transactions'));
         if (localTransactions) {
             this.setState({
                 transactions: localTransactions,
-                total: countTransactionSum(localTransactions, 'entry', 'category')
+                total: countTransactionSum(localTransactions)
             });
         }
     }
@@ -68,7 +80,23 @@ class Main extends Component {
         this.setState({openDialog: false});
     };
 
-    handleChangeTransaction = (event, index, value) => this.setState({category: value});
+    handleChangeOperation = (value) => {
+        this.setState({
+            operation: value,
+        });
+
+        if (value === 'outcome' && this.state.category.charAt(0) !== '0' ) {
+            this.setState({
+                category: '0001',
+            });
+        } else if (value === 'income' && this.state.category.charAt(0) !== '1'){
+            this.setState({
+                category: '1001',
+            });
+        }
+    };
+
+    handleChangeCategory = (event, index, value) => this.setState({category: value});
 
     handleChangeAddEntry = (event, newValue) => {
         this.setState({entry: newValue});
@@ -78,24 +106,33 @@ class Main extends Component {
         let array = this.state.transactions.filter(item => item !== deletedItem);
         this.setState({
             transactions: array,
-            total: countTransactionSum(array, 'entry', 'category')
+            total: countTransactionSum(array)
         });
     };
 
     handleSubmitAddTransactionDialog = () => {
-        let array = this.state.transactions;
-        array.push({
-            'category': this.state.category,
-            'entry': this.state.entry,
-            'date': Date.now()
-        });
+        if (this.state.entry !== '0' && this.state.entry !== '') {
+            let array = this.state.transactions;
+            array.push({
+                'operation': this.state.operation,
+                'entry': this.state.entry,
+                'date': Date.now(),
+                'category': this.state.category,
+            });
 
-        this.setState({
-            transactions: array,
-            total: countTransactionSum(array, 'entry', 'category'),
-            openDialog: false
-        });
-        updateLocalStorage(this);
+            this.setState({
+                transactions: array,
+                entry: '',
+                total: countTransactionSum(array),
+                openDialog: false,
+                errorText: ''
+            });
+            updateLocalStorage(this);
+        } else {
+            this.setState({
+                errorText: 'Enter a value'
+            });
+        }
     };
 
     render() {
@@ -122,7 +159,7 @@ class Main extends Component {
                 <FloatingActionButton
                     mini={true}
                     secondary={true}
-                    style={style}
+                    style={styles.floatingButton}
                     onClick={this.handleOpenDialog}
                 >
                     <ContentAdd/>
@@ -138,20 +175,51 @@ class Main extends Component {
                     open={this.state.openDialog}
                     onRequestClose={this.handleCloseDialog}
                 >
-                    <SelectField
-                        floatingLabelText="Choose the category"
-                        value={this.state.category}
-                        onChange={this.handleChangeTransaction}
+                    <Tabs
+                        value={this.state.operation}
+                        onChange={this.handleChangeOperation}
                     >
-                        <MenuItem value={1} primaryText="Outcome"/>
-                        <MenuItem value={2} primaryText="Income"/>
-                    </SelectField>
-                    <br/>
+                        <Tab label="Outcome" value="outcome">
+                            <div>
+                                <SelectField
+                                    floatingLabelText="Choose the category"
+                                    value={this.state.category}
+                                    onChange={this.handleChangeCategory}
+                                >
+                                    {categories.map((item, index) => (
+                                        item.operation === 'outcome' &&
+                                        <MenuItem value={item.id}
+                                                  primaryText={item.name}
+                                                  key={item.id}
+                                        />
+                                    ))}
+                                </SelectField>
+                            </div>
+                        </Tab>
+                        <Tab label="Income" value="income">
+                            <div>
+                                <SelectField
+                                    floatingLabelText="Choose the category"
+                                    value={this.state.category}
+                                    onChange={this.handleChangeCategory}
+                                >
+                                    {categories.map((item, index) => (
+                                        item.operation === 'income' &&
+                                        <MenuItem value={item.id}
+                                                  primaryText={item.name}
+                                                  key={item.id}
+                                        />
+                                    ))}
+                                </SelectField>
+                            </div>
+                        </Tab>
+                    </Tabs>
                     <TextField
                         hintText="0"
                         floatingLabelText="Enter Sum"
                         type="number"
                         onChange={this.handleChangeAddEntry}
+                        errorText={this.state.errorText}
                     />
                 </Dialog>
             </div>

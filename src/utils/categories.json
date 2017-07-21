@@ -1,0 +1,50 @@
+[
+    {
+        "id":"0001",
+        "name":"Food&Drinks",
+        "operation":"outcome",
+        "icon": ""
+    },
+    {
+        "id":"0002",
+        "name":"Transport",
+        "operation":"outcome",
+        "icon": ""
+    },
+    {
+        "id":"0003",
+        "name":"Travel",
+        "operation":"outcome",
+        "icon": ""
+    },
+    {
+        "id":"0004",
+        "name":"Health",
+        "operation":"outcome",
+        "icon": ""
+    },
+    {
+        "id":"0005",
+        "name":"Bills",
+        "operation":"outcome",
+        "icon": ""
+    },
+    {
+        "id":"1001",
+        "name":"Salary",
+        "operation":"income",
+        "icon": ""
+    },
+    {
+        "id":"1002",
+        "name":"Gift",
+        "operation":"income",
+        "icon": ""
+    },
+    {
+        "id":"1003",
+        "name":"Investments",
+        "operation":"income",
+        "icon": ""
+    }
+]
