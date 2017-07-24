@@ -1,50 +1,56 @@
 [
-    {
-        "id":"0001",
-        "name":"Food&Drinks",
-        "operation":"outcome",
-        "icon": ""
-    },
-    {
-        "id":"0002",
-        "name":"Transport",
-        "operation":"outcome",
-        "icon": ""
-    },
-    {
-        "id":"0003",
-        "name":"Travel",
-        "operation":"outcome",
-        "icon": ""
-    },
-    {
-        "id":"0004",
-        "name":"Health",
-        "operation":"outcome",
-        "icon": ""
-    },
-    {
-        "id":"0005",
-        "name":"Bills",
-        "operation":"outcome",
-        "icon": ""
-    },
-    {
-        "id":"1001",
-        "name":"Salary",
-        "operation":"income",
-        "icon": ""
-    },
-    {
-        "id":"1002",
-        "name":"Gift",
-        "operation":"income",
-        "icon": ""
-    },
-    {
-        "id":"1003",
-        "name":"Investments",
-        "operation":"income",
-        "icon": ""
-    }
+  {
+    "id": "0001",
+    "name": "Food&Drinks",
+    "operation": "outcome",
+    "icon": "local_dining"
+  },
+  {
+    "id": "0002",
+    "name": "Transport",
+    "operation": "outcome",
+    "icon": "directions_car"
+  },
+  {
+    "id": "0003",
+    "name": "Travel",
+    "operation": "outcome",
+    "icon": "flight"
+  },
+  {
+    "id": "0004",
+    "name": "Health",
+    "operation": "outcome",
+    "icon": "local_hospital"
+  },
+  {
+    "id": "0005",
+    "name": "Bills",
+    "operation": "outcome",
+    "icon": "local_post_office"
+  },
+  {
+    "id": "0006",
+    "name": "Shopping",
+    "operation": "outcome",
+    "icon": "shopping_basket"
+  },
+  {
+    "id": "1001",
+    "name": "Salary",
+    "operation": "income",
+    "icon": "attach_money"
+  },
+  {
+    "id": "1002",
+    "name": "Gift",
+    "operation": "income",
+    "icon": "card_giftcard"
+  },
+  {
+    "id": "1003",
+    "name": "Investments",
+    "operation": "income",
+    "icon": "local_atm"
+  }
 ]

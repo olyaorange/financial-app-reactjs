@@ -1,11 +1,9 @@
 import React from 'react';
 import {List, ListItem} from 'material-ui/List';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
-import Avatar from 'material-ui/Avatar';
-import ContentAddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline';
-import ContentRemoveCircleOutline from 'material-ui/svg-icons/content/remove-circle-outline';
-import {red500, green500} from 'material-ui/styles/colors';
-
+//import {red500, green500} from 'material-ui/styles/colors';
+import { Link } from 'react-router-dom';
+import AvatarCategoryIcon from './AvatarCategoryIcon'
 import categories from '../utils/categories.json';
 
 const styles = {
@@ -39,30 +37,35 @@ const TransactionList = (props) => {
 
     return (
         <List>
-            {props.transactions.map((item, index) => (
-                <ListItem
-                    key={+item.date}
-                    leftAvatar={
-                        <Avatar
-                            backgroundColor={item.operation === 'outcome' ? red500 : green500}
-                            icon={item.operation === 'outcome'
-                                ? <ContentRemoveCircleOutline/>
-                                : <ContentAddCircleOutline/>}
-                        />
+            {props.transactions.map((item, index) => {
+                let categoryName, categoryIcon;
+                categories.map(elem => {
+                    if (elem.id === item.category) {
+                        categoryName = elem.name;
+                        categoryIcon = elem.icon;
                     }
-                    rightIcon={<ActionDelete onClick={handleClickDeleteTransaction.bind(null, item)}/>}
-                    secondaryText={formatDate(item.date)}
-                >
-                    <div style={styles.categoryStyle}>
-                        {categories.map(elem => elem.id === item.category && elem.name)}
-                    </div>
-                    <div className={item.operation === 'outcome' ? 'itemOutcome' : 'itemIncome'}
-                         style={styles.sumStyle}
+                });
+
+                return (
+                    <ListItem
+                        key={+item.date}
+                        leftAvatar={<AvatarCategoryIcon iconName={categoryIcon} itemOperation={item.operation}/>}
+                        rightIcon={<ActionDelete onClick={handleClickDeleteTransaction.bind(null, item)}/>}
+                        secondaryText={formatDate(item.date)}
                     >
-                        {item.operation === 'outcome' ? '-' + item.entry : item.entry} $
-                        </div>
-                </ListItem>
-            ))}
+                        <Link to={'/detail/' + item.category}>
+                            <div style={styles.categoryStyle}>
+                                {categoryName}
+                            </div>
+                            <div className={item.operation === 'outcome' ? 'itemOutcome' : 'itemIncome'}
+                                 style={styles.sumStyle}
+                            >
+                                {item.operation === 'outcome' ? '-' + item.entry : item.entry} $
+                            </div>
+                        </Link>
+                    </ListItem>
+                )
+            })}
         </List>
     )
 };
