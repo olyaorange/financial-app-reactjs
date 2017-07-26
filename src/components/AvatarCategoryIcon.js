@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import {red500, green500, white} from 'material-ui/styles/colors';
 import FontIcon from 'material-ui/FontIcon';
+import {red500, green500, white} from 'material-ui/styles/colors';
 
 const styles = {
     avatar: {

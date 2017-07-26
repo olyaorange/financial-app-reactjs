@@ -9,8 +9,9 @@ import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
-import categories from '../utils/categories.json';
 import TransactionList from './TransactionList';
+import {countTransactionSum} from '../utils/utils.js';
+import categories from '../utils/categories.json';
 
 const styles = {
     floatingButton: {
@@ -27,16 +28,6 @@ const styles = {
         fontWeight: 400,
     },
 };
-
-function countTransactionSum(array) {
-    return array.reduce(function (total, current) {
-        if (current['operation'] === 'outcome') {
-            return +total - +current['entry'];
-        } else {
-            return +total + +current['entry'];
-        }
-    }, 0);
-}
 
 let updateLocalStorage = (_this) => {
     let transactions = JSON.stringify(_this.state.transactions);

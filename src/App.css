@@ -4,3 +4,13 @@
 .itemIncome {
     color: #4CAF50 !important;
 }
+.common-link {
+    color: #9C27B0;
+    border-bottom: 1px solid transparent;
+    text-decoration: none;
+    transition: all .2s ease-in;
+}
+.common-link:hover {
+    color: #BA68C8;
+    border-bottom-color: #BA68C8;
+}
